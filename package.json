@@ -1,0 +1,31 @@
+{
+  "name": "erp-besi",
+  "version": "1.0.0",
+  "description": "ERP sistem distributor besi B2B/B2C",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=@erp-besi/api\" \"npm run dev --workspace=@erp-besi/web\"",
+    "build": "npm run build --workspace=apps/api --workspace=apps/web",
+    "railway:build": "npm run build --workspace=@erp-besi/api",
+    "railway:preflight": "node apps/api/scripts/check-railway-env.mjs",
+    "railway:start": "npm run railway:preflight && npm run prisma:migrate --workspace=@erp-besi/api && npm run start --workspace=@erp-besi/api",
+    "railway:migrate": "npm run prisma:migrate --workspace=@erp-besi/api",
+    "type-check": "npm run type-check --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "keywords": [
+    "erp",
+    "besi",
+    "distributor",
+    "inventory"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
