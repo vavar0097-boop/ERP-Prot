@@ -86,6 +86,21 @@ npm run dev --workspace=@erp-besi/web
 
 Frontend berjalan di `http://localhost:5173`.
 
+## Akses Login Awal
+
+```txt
+Email: admin@erpbesi.local
+Password: Admin12345
+```
+
+Untuk production, set di Railway backend:
+
+```bash
+ADMIN_EMAIL=admin@domain-kamu.com
+ADMIN_PASSWORD=password-kuat
+AUTH_SECRET=random-secret-minimum-16-character
+```
+
 Run semua workspace dari root:
 
 ```bash
@@ -101,6 +116,8 @@ npm run build
 ## Endpoint Awal
 
 - `GET /health`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
 - `GET /api/products`
 - `POST /api/products`
 - `GET /api/suppliers`

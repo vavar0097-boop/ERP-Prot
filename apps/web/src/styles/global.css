@@ -121,6 +121,115 @@ a {
   box-shadow: 0 10px 30px rgba(23, 33, 31, 0.06);
 }
 
+.logout-button,
+.data-form button,
+.login-panel button {
+  border: 0;
+  border-radius: 8px;
+  background: #d5a642;
+  color: #17211f;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  padding: 12px 14px;
+}
+
+.logout-button {
+  margin-top: auto;
+  width: 100%;
+}
+
+.login-page {
+  align-items: center;
+  background: #202724;
+  display: grid;
+  min-height: 100vh;
+  padding: 20px;
+  place-items: center;
+}
+
+.login-panel {
+  background: #ffffff;
+  border: 1px solid #dfe4df;
+  border-radius: 8px;
+  display: grid;
+  gap: 16px;
+  max-width: 420px;
+  padding: 28px;
+  width: 100%;
+}
+
+.login-panel h1 {
+  margin: 0;
+}
+
+.login-panel label,
+.data-form label {
+  color: #4c5a53;
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.login-panel input,
+.data-form input,
+.data-form select {
+  border: 1px solid #cfd8d2;
+  border-radius: 8px;
+  font: inherit;
+  min-height: 44px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.form-error {
+  background: #fff0ed;
+  border-radius: 8px;
+  color: #8f2419;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.data-form {
+  align-items: end;
+  background: #ffffff;
+  border: 1px solid #dfe4df;
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  padding: 16px;
+}
+
+.table-panel {
+  background: #ffffff;
+  border: 1px solid #dfe4df;
+  border-radius: 8px;
+  overflow: auto;
+  padding: 16px;
+}
+
+.table-panel table {
+  border-collapse: collapse;
+  min-width: 760px;
+  width: 100%;
+}
+
+.table-panel th,
+.table-panel td {
+  border-bottom: 1px solid #edf0ed;
+  padding: 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table-panel th {
+  color: #5d6963;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
 .metric-card {
   display: grid;
   gap: 10px;
@@ -206,6 +315,10 @@ a {
   .metrics-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .data-form {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 560px) {
@@ -215,6 +328,10 @@ a {
   }
 
   .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .data-form {
     grid-template-columns: 1fr;
   }
 }

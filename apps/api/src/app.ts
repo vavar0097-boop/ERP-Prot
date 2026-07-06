@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import { env } from "./config/env.js";
 import { healthRoutes } from "./modules/health/health.route.js";
+import { authRoutes } from "./modules/auth/auth.route.js";
 import { productRoutes } from "./modules/products/product.route.js";
 import { supplierRoutes } from "./modules/suppliers/supplier.route.js";
 import { customerRoutes } from "./modules/customers/customer.route.js";
@@ -26,8 +27,8 @@ export const createApp = (): Express => {
   ];
   const allowedOrigins =
     env.NODE_ENV === "development"
-      ? [...developmentOrigins, env.FRONTEND_URL].map(normalizeOrigin)
-      : [env.FRONTEND_URL].map(normalizeOrigin);
+      ? [...developmentOrigins, env.FRONTEND_URL, ...(env.FRONTEND_URLS?.split(",") ?? [])].map(normalizeOrigin)
+      : [env.FRONTEND_URL, ...(env.FRONTEND_URLS?.split(",") ?? [])].map(normalizeOrigin);
 
   const corsOptions = {
     origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
@@ -48,6 +49,7 @@ export const createApp = (): Express => {
   app.use(express.urlencoded({ extended: true }));
 
   app.use("/health", healthRoutes);
+  app.use("/api/auth", authRoutes);
   app.use("/api/products", productRoutes);
   app.use("/api/suppliers", supplierRoutes);
   app.use("/api/customers", customerRoutes);

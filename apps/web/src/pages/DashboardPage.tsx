@@ -1,9 +1,10 @@
-const metrics = [
-  { label: "SKU Aktif", value: "0", note: "Produk besi siap didaftarkan" },
-  { label: "Stok Minimum", value: "0", note: "Alert berbasis minimum stock" },
-  { label: "PO Terbuka", value: "0", note: "Draft sampai received" },
-  { label: "Piutang", value: "Rp 0", note: "Aging dan status pembayaran" },
-];
+import { useEffect, useState } from "react";
+import { api } from "../lib/api";
+
+type Product = { id: string; minimumStock: string; stocks?: Array<{ quantity: string }> };
+type Supplier = { id: string };
+type Customer = { id: string };
+type Stock = { id: string; quantity: string; product: { minimumStock: string } };
 
 const modules = [
   "Manajemen stok per lokasi",
@@ -14,6 +15,39 @@ const modules = [
 ];
 
 export function DashboardPage() {
+  const [metrics, setMetrics] = useState([
+    { label: "SKU Aktif", value: "0", note: "Produk besi aktif" },
+    { label: "Stok Minimum", value: "0", note: "Item di bawah minimum" },
+    { label: "Supplier", value: "0", note: "Supplier aktif" },
+    { label: "Customer", value: "0", note: "B2B/B2C terdaftar" },
+  ]);
+
+  useEffect(() => {
+    const safeGet = async <T,>(path: string): Promise<T[]> => {
+      try {
+        const response = await api.get<T[]>(path);
+        return response.data ?? [];
+      } catch {
+        return [];
+      }
+    };
+
+    Promise.all([
+      safeGet<Product>("/api/products"),
+      safeGet<Stock>("/api/stocks"),
+      safeGet<Supplier>("/api/suppliers"),
+      safeGet<Customer>("/api/customers"),
+    ]).then(([products, stocks, suppliers, customers]) => {
+      const lowStock = stocks.filter((stock) => Number(stock.quantity) <= Number(stock.product.minimumStock)).length;
+      setMetrics([
+        { label: "SKU Aktif", value: String(products.length), note: "Produk besi aktif" },
+        { label: "Stok Minimum", value: String(lowStock), note: "Item di bawah minimum" },
+        { label: "Supplier", value: String(suppliers.length), note: "Supplier aktif" },
+        { label: "Customer", value: String(customers.length), note: "B2B/B2C terdaftar" },
+      ]);
+    });
+  }, []);
+
   return (
     <section className="page">
       <div className="page-header">

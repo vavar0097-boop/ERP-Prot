@@ -27,6 +27,8 @@ Untuk error:
 | Method | Path | Keterangan |
 | --- | --- | --- |
 | GET | `/health` | Cek status API |
+| POST | `/api/auth/login` | Login admin |
+| GET | `/api/auth/me` | Cek user dari token |
 | GET | `/api/products` | List produk besi |
 | POST | `/api/products` | Buat produk besi |
 | GET | `/api/suppliers` | List supplier |
@@ -56,6 +58,19 @@ Response:
   }
 }
 ```
+
+## POST /api/auth/login
+
+Request body:
+
+```json
+{
+  "email": "admin@erpbesi.local",
+  "password": "Admin12345"
+}
+```
+
+Response berisi `token` untuk akses aplikasi frontend.
 
 ## POST /api/products
 

@@ -18,6 +18,12 @@ export type ApiResponse<T> = {
   errors?: Record<string, string[]>;
 };
 
+export const authStorage = {
+  getToken: () => localStorage.getItem("erp_besi_token"),
+  setToken: (token: string) => localStorage.setItem("erp_besi_token", token),
+  clear: () => localStorage.removeItem("erp_besi_token"),
+};
+
 async function request<T>(path: string, options?: RequestInit): Promise<ApiResponse<T>> {
   if (!API_URL) {
     throw new Error("API URL belum diset. Isi VITE_API_URL di Netlify atau edit config.js.");
@@ -26,6 +32,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<ApiRespo
   const response = await fetch(`${API_URL}${path}`, {
     headers: {
       "Content-Type": "application/json",
+      ...(authStorage.getToken() ? { Authorization: `Bearer ${authStorage.getToken()}` } : {}),
       ...options?.headers,
     },
     ...options,
