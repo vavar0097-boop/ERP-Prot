@@ -20,4 +20,13 @@ export const stockController = {
       next(error);
     }
   },
+
+  locations: async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const locations = await stockService.locations();
+      res.json(apiResponse.success("Stock locations retrieved successfully", locations));
+    } catch (error) {
+      next(error);
+    }
+  },
 };

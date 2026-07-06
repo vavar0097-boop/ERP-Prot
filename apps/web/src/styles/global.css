@@ -123,7 +123,8 @@ a {
 
 .logout-button,
 .data-form button,
-.login-panel button {
+.login-panel button,
+.table-action {
   border: 0;
   border-radius: 8px;
   background: #d5a642;
@@ -132,6 +133,16 @@ a {
   font: inherit;
   font-weight: 800;
   padding: 12px 14px;
+}
+
+.data-form button:disabled,
+.table-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.table-action {
+  padding: 8px 10px;
 }
 
 .logout-button {

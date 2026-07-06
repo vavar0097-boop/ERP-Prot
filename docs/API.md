@@ -38,7 +38,8 @@ Untuk error:
 | GET | `/api/stocks` | List stok per produk dan lokasi |
 | GET | `/api/stocks/movements` | List riwayat movement stok |
 | GET | `/api/purchase-orders` | List purchase order |
-| POST | `/api/purchase-orders` | Placeholder create PO |
+| POST | `/api/purchase-orders` | Buat purchase order |
+| POST | `/api/purchase-orders/:id/receive` | Goods receipt dan tambah stok |
 | GET | `/api/sales-orders` | List sales order |
 | POST | `/api/sales-orders` | Placeholder create SO |
 | GET | `/api/invoices` | List invoice |

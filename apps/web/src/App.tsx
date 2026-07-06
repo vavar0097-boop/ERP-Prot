@@ -8,6 +8,7 @@ import { ProductsPage } from "./pages/ProductsPage";
 import { SuppliersPage } from "./pages/SuppliersPage";
 import { CustomersPage } from "./pages/CustomersPage";
 import { StocksPage } from "./pages/StocksPage";
+import { PurchaseOrdersPage } from "./pages/PurchaseOrdersPage";
 
 export default function App() {
   const [authenticated, setAuthenticated] = useState(Boolean(authStorage.getToken()));
@@ -29,6 +30,7 @@ export default function App() {
           </NavLink>
           <NavLink to="/products">Produk</NavLink>
           <NavLink to="/stocks">Stok</NavLink>
+          <NavLink to="/purchase-orders">Purchase Order</NavLink>
           <NavLink to="/suppliers">Supplier</NavLink>
           <NavLink to="/customers">Customer</NavLink>
           <NavLink to="/health">Health Check</NavLink>
@@ -49,6 +51,7 @@ export default function App() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/stocks" element={<StocksPage />} />
+          <Route path="/purchase-orders" element={<PurchaseOrdersPage />} />
           <Route path="/suppliers" element={<SuppliersPage />} />
           <Route path="/customers" element={<CustomersPage />} />
           <Route path="/health" element={<HealthCheckPage />} />

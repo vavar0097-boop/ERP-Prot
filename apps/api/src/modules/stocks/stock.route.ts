@@ -5,5 +5,6 @@ const router = Router();
 
 router.get("/", stockController.list);
 router.get("/movements", stockController.movements);
+router.get("/locations", stockController.locations);
 
 export const stockRoutes = router;

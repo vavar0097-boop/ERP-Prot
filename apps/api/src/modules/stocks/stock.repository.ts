@@ -27,4 +27,11 @@ export const stockRepository = {
       },
       take: 100,
     }),
+
+  findLocations: () =>
+    prisma.stockLocation.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    }),
 };
