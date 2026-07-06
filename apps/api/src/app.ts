@@ -16,6 +16,8 @@ import { notFoundMiddleware } from "./middleware/not-found.middleware.js";
 export const createApp = (): Express => {
   const app = express();
 
+  const normalizeOrigin = (origin: string) => origin.replace(/\/$/, "");
+
   const developmentOrigins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -24,12 +26,12 @@ export const createApp = (): Express => {
   ];
   const allowedOrigins =
     env.NODE_ENV === "development"
-      ? [...developmentOrigins, env.FRONTEND_URL]
-      : [env.FRONTEND_URL];
+      ? [...developmentOrigins, env.FRONTEND_URL].map(normalizeOrigin)
+      : [env.FRONTEND_URL].map(normalizeOrigin);
 
   const corsOptions = {
     origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(normalizeOrigin(origin))) {
         callback(null, true);
         return;
       }

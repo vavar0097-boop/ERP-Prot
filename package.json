@@ -9,11 +9,13 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=@erp-besi/api\" \"npm run dev --workspace=@erp-besi/web\"",
-    "build": "npm run build --workspace=apps/api --workspace=apps/web",
+    "build": "npm run build --workspace=apps/api --workspace=apps/web && rm -rf dist && cp -R apps/web/dist dist",
+    "build:web": "npm run build --workspace=@erp-besi/web && rm -rf dist && cp -R apps/web/dist dist",
     "railway:build": "npm run build --workspace=@erp-besi/api",
     "railway:preflight": "node apps/api/scripts/check-railway-env.mjs",
-    "railway:start": "npm run railway:preflight && npm run prisma:migrate --workspace=@erp-besi/api && npm run start --workspace=@erp-besi/api",
-    "railway:migrate": "npm run prisma:migrate --workspace=@erp-besi/api",
+    "railway:start": "npm run railway:preflight && npm run railway:migrate && npm run start --workspace=@erp-besi/api",
+    "railway:migrate": "node apps/api/scripts/prisma-migrate-deploy.mjs",
+    "deploy:env": "node scripts/check-deploy-env.mjs",
     "type-check": "npm run type-check --workspaces",
     "lint": "npm run lint --workspaces"
   },

@@ -1,3 +1,8 @@
+import { config } from "dotenv";
+
+config();
+config({ path: "apps/api/.env" });
+
 const requiredEnv = ["DATABASE_URL"];
 
 const missing = requiredEnv.filter((key) => !process.env[key]);

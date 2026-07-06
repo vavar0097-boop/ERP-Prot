@@ -4,8 +4,8 @@
 
 Konfigurasi project Netlify:
 
-- Base directory: `apps/web`
-- Build command: `npm run build`
+- Base directory: kosongkan jika memakai `netlify.toml` root
+- Build command: `npm run build:web`
 - Publish directory: `dist`
 - Environment variable:
 
@@ -13,7 +13,13 @@ Konfigurasi project Netlify:
 VITE_API_URL=https://nama-backend.up.railway.app
 ```
 
-Jika base directory tidak diatur, publish directory bisa memakai `apps/web/dist`.
+Untuk project ini, setelah backend Railway punya public domain, set:
+
+```bash
+VITE_API_URL=https://domain-backend-railway-kamu.up.railway.app
+```
+
+Jika Netlify UI tetap diset base directory `apps/web`, gunakan build command `npm run build` dan publish directory `dist`.
 
 Frontend butuh `VITE_API_URL` karena aplikasi React berjalan di browser dan harus tahu alamat backend API. Prefix `VITE_` wajib agar environment variable tersedia saat build Vite.
 
@@ -37,7 +43,7 @@ File ini sudah tersedia di `apps/web/public/_redirects`, dan fallback yang sama 
 
 ## Railway PostgreSQL
 
-Gunakan Railway PostgreSQL sebagai database utama.
+Gunakan Supabase PostgreSQL atau Railway PostgreSQL sebagai database utama.
 
 Railway project ID:
 
@@ -51,9 +57,9 @@ Railway backend service name:
 @erp-besi/api
 ```
 
-1. Tambahkan service PostgreSQL di project Railway.
-2. Copy `DATABASE_URL` dari Railway PostgreSQL.
-3. Pasang `DATABASE_URL` ke service backend Railway.
+1. Buat database PostgreSQL di Supabase atau Railway.
+2. Copy connection string PostgreSQL.
+3. Pasang connection string ke service backend Railway sebagai `DATABASE_URL`.
 4. Deploy backend dari repo ini.
 
 Project ini sudah memiliki Prisma migration di:
@@ -62,7 +68,14 @@ Project ini sudah memiliki Prisma migration di:
 apps/api/prisma/migrations/0001_init_erp_besi/migration.sql
 ```
 
-Saat backend Railway start, command `npm run railway:start` akan menjalankan `prisma migrate deploy` dan membentuk tabel ERP di PostgreSQL Railway.
+Saat backend Railway start, command `npm run railway:start` akan menjalankan `prisma migrate deploy` dan membentuk tabel ERP di PostgreSQL.
+
+Untuk Supabase:
+
+- `DATABASE_URL` boleh memakai Supabase pooler port `6543` dengan `pgbouncer=true` untuk runtime.
+- Untuk migration, set `DIRECT_URL` atau `MIGRATE_DATABASE_URL` ke Supabase session/direct connection port `5432` jika tersedia.
+- Jika `DIRECT_URL`/`MIGRATE_DATABASE_URL` tidak diset, migration akan mencoba otomatis memakai direct URL yang diturunkan dari pooler URL.
+- Jika auto-derive tidak cocok, set `DIRECT_URL` atau `MIGRATE_DATABASE_URL` secara eksplisit memakai direct connection Supabase port `5432`.
 
 ## Railway Backend
 
@@ -74,7 +87,8 @@ Konfigurasi service Railway jika memakai `railway.json` di root repo:
 - Environment variables:
 
 ```bash
-DATABASE_URL=postgresql://...railway-postgres-url...
+DATABASE_URL=postgresql://...supabase-or-railway-postgres-url...
+DIRECT_URL=postgresql://...supabase-session-or-direct-url...
 PORT=3000
 NODE_ENV=production
 FRONTEND_URL=https://nama-frontend.netlify.app
@@ -116,6 +130,31 @@ railway up
 ```
 
 Project ID ini bukan URL backend; untuk Netlify tetap gunakan public domain service Railway, misalnya `https://nama-backend.up.railway.app`.
+
+## Env Check
+
+Sebelum deploy, cek env lokal tanpa membuka password:
+
+```bash
+npm run deploy:env
+```
+
+Mapping production yang dibutuhkan:
+
+Netlify frontend:
+
+```bash
+VITE_API_URL=https://domain-backend-railway-kamu.up.railway.app
+```
+
+Railway backend:
+
+```bash
+DATABASE_URL=postgresql://...supabase-pooler-6543...
+DIRECT_URL=postgresql://...supabase-session-5432...
+NODE_ENV=production
+FRONTEND_URL=https://erp-besi.netlify.app
+```
 
 Jika ingin menjalankan migration manual di Railway shell atau lokal dengan `DATABASE_URL` production:
 
